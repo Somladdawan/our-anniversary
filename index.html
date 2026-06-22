@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Special Days ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Mitr', sans-serif;
+            background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 text-gray-800">
+
+    <div class="max-w-md w-full bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-6 text-center border border-pink-100">
+        <h1 class="text-3xl font-bold text-pink-600 mb-2">❤️ Our Journey Together</h1>
+        <p class="text-sm text-gray-500 mb-6">บันทึกความทรงจำของเราสองคน</p>
+
+        <div class="space-y-6">
+            <div class="bg-gradient-to-r from-pink-500 to-rose-500 rounded-2xl p-4 text-white shadow-md transform hover:scale-105 transition">
+                <h2 class="text-lg font-medium opacity-90">👩‍❤️‍👨 วันครบรอบที่เป็นแฟนกัน</h2>
+                <p class="text-xs opacity-75 mt-0.5">13 เมษายน 2563</p>
+                <div id="anniversary-detailed" class="text-xl font-bold mt-2">กำลังคำนวณ...</div>
+                <div id="anniversary-total" class="text-xs opacity-80 mt-1"></div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-pink-100 transform hover:scale-105 transition">
+                <h2 class="text-base font-medium text-gray-600">👀 เจอกันวันแรก</h2>
+                <p class="text-xs text-gray-400 mt-0.5">12 กุมภาพันธ์ 2563</p>
+                <div id="first-meet-detailed" class="text-lg font-bold text-pink-500 mt-2">กำลังคำนวณ...</div>
+                <div id="first-meet-total" class="text-xs text-gray-400 mt-1"></div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-pink-100 transform hover:scale-105 transition">
+                <h2 class="text-base font-medium text-gray-600">💬 รู้จักกันวันแรก</h2>
+                <p class="text-xs text-gray-400 mt-0.5">16 มกราคม 2563</p>
+                <div id="first-know-detailed" class="text-lg font-bold text-pink-500 mt-2">กำลังคำนวณ...</div>
+                <div id="first-know-total" class="text-xs text-gray-400 mt-1"></div>
+            </div>
+        </div>
+
+        <footer class="mt-8 text-xs text-pink-400 font-light">
+            Made with ❤️ for us
+        </footer>
+    </div>
+
+    <script>
+        // กำหนดวันที่เริ่มต้น (ปี ค.ศ., เดือนที่เริ่มจาก 0 (ม.ค.=0, เม.ย.=3), วันที่)
+        const dates = {
+            anniversary: new Date(2020, 3, 13), // 13/04/2020
+            firstMeet: new Date(2020, 1, 12),   // 12/02/2020
+            firstKnow: new Date(2020, 0, 16)    // 16/01/2020
+        };
+
+        function calculateDuration(startDate) {
+            const now = new Date();
+            
+            // 1. คำนวณจำนวนวันรวมทั้งหมด
+            const diffTime = Math.abs(now - startDate);
+            const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            // 2. คำนวณแบบแยก ปี / เดือน / วัน
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
+
+            if (days < 0) {
+                months--;
+                // หาวันสุดท้ายของเดือนที่แล้ว
+                const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += previousMonth.getDate();
+            }
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            return { years, months, days, totalDays };
+        }
+
+        function updateDisplay() {
+            // อัปเดตข้อมูลแต่ละวันสำคัญ
+            const targetIds = ['anniversary', 'firstMeet', 'firstKnow'];
+            
+            targetIds.forEach(id => {
+                const result = calculateDuration(dates[id]);
+                
+                // แสดงผลแบบละเอียด: X ปี Y เดือน Z วัน
+                document.getElementById(`${id}-detailed`).innerHTML = 
+                    `${result.years} ปี ${result.months} เดือน ${result.days} วัน`;
+                
+                // แสดงผลวันรวมทั้งหมด
+                document.getElementById(`${id}-total`).innerHTML = 
+                    `ผ่านมาแล้วทั้งหมด ${result.totalDays.toLocaleString()} วัน`;
+            });
+        }
+
+        // สั่งให้ทำงานทันทีและอัปเดตทุกๆ 1 ชั่วโมง (หรือเปลี่ยนเป็น Real-time ได้)
+        updateDisplay();
+        setInterval(updateDisplay, 3600000); 
+    </script>
+</body>
+</html>
